@@ -151,7 +151,7 @@ def cosine_similarity(dict1, dict2):
   dot_product = sum( a * b for (a, b) in zip(dict1_vector_list, dict2_vector_list))
   
   cosine = dot_product / (dim_1 * dim_2)
-  print(cosine)
+  return cosine
 
 
   
