@@ -75,8 +75,8 @@ def remove_stopwords(word_lst):
   corpus = word_lst
   stopwords = generate_stopwords_list()
   
-  clean_text = set(corpus) - set(stopwords)
-  return list(clean_text)
+  clean_text = [word for word in corpus if word not in stopwords]
+  return clean_text
 
 def word_frequency(word_lst):
   '''
@@ -90,7 +90,7 @@ def word_frequency(word_lst):
 
   for word in word_lst:
     if word in frequency_map:
-      frequency_map[word] = frequency_map[word] + 1
+      frequency_map[word] += 1#frequency_map[word] + 1
     else:
       frequency_map[word] = 1
   
@@ -121,19 +121,68 @@ def unique_word_count(word_dict):
 
 
 def jaccard_similarity(text1, text2):
+  '''
+    This function calculates the Jaccard Similarity Index between
+    2 documents which ranges between 0 and 1. An index closer to 1 means
+    that the texts are more similar. Closer to 0 means more dissimilar.
+    It's calculated by dividing the number of observations in both sets
+    by the number of observations in either set.
+    So an intersection divided by a union minus the intersection.
+    Input: 2 lists
+    Output: float
+  '''
   intersection = list(set(text1) & set(text2))
-  print(intersection)
+  union = (text1 + text2) 
+  
+  return (len(intersection)/((len(union)) - len(intersection)))
+  
 
+def cosine_similarity(dict1, dict2):
+
+  word_dict1 = word_frequency(dict1)
+  word_dict2 = word_frequency(dict2)
+
+  words = list(word_dict1.keys() | word_dict2.keys())
+  dict1_vector_list = [word_dict1.get(word, 0) for word in words]
+  dict2_vector_list = [word_dict2.get(word, 0) for word in words]
+
+  dim_1 = sum(vector * vector for vector in dict1_vector_list) ** 0.5
+  dim_2 = sum(vector * vector for vector in dict2_vector_list) ** 0.5
+  dot_product = sum( a * b for (a, b) in zip(dict1_vector_list, dict2_vector_list))
+  
+  cosine = dot_product / (dim_1 * dim_2)
+  print(cosine)
+
+
+  
 
 if __name__ == '__main__':
 
   sample1 = './sample_texts/sample_1.txt'
   sample2 = './sample_texts/sample_2.txt'
-  word_list = transform_text(sample1)
+  sample3 = './sample_texts/sample_3.txt'
+  # word_list = transform_text(sample1)
   # word_dict = word_frequency(word_list)
-  # unique_word_count(word_dict)
-  lst_1 = transform_text(sample1)
-  lst_2 = transform_text(sample2)
-  # jaccard_similarity(lst_1, lst_2)
-  print(remove_stopwords(word_list))
+  # list_no_sw = remove_stopwords(word_list)
+  # unique_words = unique_word_count(word_dict)
+  lst_1 = remove_stopwords(transform_text(sample1))
+  lst_2 = remove_stopwords(transform_text(sample2))
+  lst_3 = remove_stopwords(transform_text(sample3))
+  word_dict1 = word_frequency(lst_1)
+  word_dict2 = word_frequency(lst_2)
+  word_dict3 = word_frequency(lst_3)
+  cosine_similarity(word_dict1, word_dict2)
+  cosine_similarity(word_dict1, word_dict3)
 
+
+
+  # jaccard_similarity(lst_1, lst_2)
+  # jaccard_similarity(lst_1, lst_3)
+  # jaccard_similarity(lst_2, lst_3)
+
+  # lst_1 = transform_text(sample1)
+  # lst_2 = transform_text(sample2)
+  # lst_3 = transform_text(sample3)
+
+  # cosine_similarity(lst_1, lst_2)
+  # cosine_similarity(lst_1, lst_3)
