@@ -154,6 +154,24 @@ def cosine_similarity(dict1, dict2):
   return cosine
 
 
+def zeropadder(num, width, add_prefix=None):
+  '''
+    This function pads each id number with zeros on the left until
+    a certain length. It also adds a prefix, if you want.
+    Input is the id number, the total length of the new id number and 
+    optionally the prefix as a string
+    Input: num = int, width = int, add_prefix = NoneType or str
+    Output: str
+
+  '''
+
+  num_str = str(num)
+  padded = num_str.zfill(width)
+
+  if add_prefix:
+    padded = f'{add_prefix}{padded}'
+
+  return padded
   
 
 if __name__ == '__main__':
