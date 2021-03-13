@@ -20,7 +20,6 @@ create_input_texts = """
 create_textsim_metrics = """
   CREATE TABLE IF NOT EXISTS textsim_metrics (
     ts_id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
-    metric_id VARCHAR,
     text_name_1 VARCHAR,
     text_name_2 VARCHAR,
     jaccard_similarity NUMERIC(10, 5),

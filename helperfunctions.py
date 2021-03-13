@@ -174,33 +174,3 @@ def zeropadder(num, width, add_prefix=None):
   return padded
   
 
-if __name__ == '__main__':
-
-  sample1 = './sample_texts/sample_1.txt'
-  sample2 = './sample_texts/sample_2.txt'
-  sample3 = './sample_texts/sample_3.txt'
-  # word_list = transform_text(sample1)
-  # word_dict = word_frequency(word_list)
-  # list_no_sw = remove_stopwords(word_list)
-  # unique_words = unique_word_count(word_dict)
-  lst_1 = remove_stopwords(transform_text(sample1))
-  lst_2 = remove_stopwords(transform_text(sample2))
-  lst_3 = remove_stopwords(transform_text(sample3))
-  word_dict1 = word_frequency(lst_1)
-  word_dict2 = word_frequency(lst_2)
-  word_dict3 = word_frequency(lst_3)
-  cosine_similarity(word_dict1, word_dict2)
-  cosine_similarity(word_dict1, word_dict3)
-
-
-
-  # jaccard_similarity(lst_1, lst_2)
-  # jaccard_similarity(lst_1, lst_3)
-  # jaccard_similarity(lst_2, lst_3)
-
-  # lst_1 = transform_text(sample1)
-  # lst_2 = transform_text(sample2)
-  # lst_3 = transform_text(sample3)
-
-  # cosine_similarity(lst_1, lst_2)
-  # cosine_similarity(lst_1, lst_3)
