@@ -9,7 +9,7 @@ def get_rowcount(conn, cursor):
   row_count = cursor.fetchone()
   return row_count[0]
 
-def insert_texts(conn, cursor, texts):
+def insert_texts(conn, cursor, texts:list):
   try:
     row_count = get_rowcount(conn, cursor)
 
@@ -36,6 +36,33 @@ def insert_texts(conn, cursor, texts):
   except Exception as e:
     print(e)
 
+
+def insert_textsim_metrics(conn, cursor, text1, text2):
+  try:
+    row_count = get_rowcount(conn, cursor)
+    metric_id = hf.zeropadder(row_count + 1, 8, 'TS_')
+    text_name_1 = str(text1).split('/')[-1]
+    text_name_2 = str(text2).split('/')[-1]
+
+    lst_1 = hf.remove_stopwords(hf.transform_text(text1))
+    lst_2 = hf.remove_stopwords(hf.transform_text(text2))
+
+    word_dict1 = hf.word_frequency(lst_1)
+    word_dict2 = hf.word_frequency(lst_2)
+
+    jaccard_similarity = hf.jaccard_similarity(lst_1, lst_2)
+    cosine_similarity = hf.cosine_similarity(word_dict1, word_dict2)
+
+    query = f"""
+      INSERT INTO textsim_metrics(metric_id, text_name_1, text_name_2, jaccard_similarity, cosine_similarity)
+      VALUES('{metric_id}', '{text_name_1}', '{text_name_2}', {jaccard_similarity}, {cosine_similarity})
+    """
+    cursor.execute(query)
+    conn.commit()
+
+  except Exception as e:
+    print(e)
+
 if __name__ == '__main__':
   conn = psycopg2.connect(
       user=PGUSERNAME,
@@ -50,4 +77,5 @@ if __name__ == '__main__':
   sample3 = './sample_texts/sample_3.txt'
   sample_list = [sample1, sample2, sample3]
   
-  insert_texts(conn, cur, sample_list)
+  # insert_texts(conn, cur, sample_list)
+  insert_textsim_metrics(conn, cur, sample1, sample2)

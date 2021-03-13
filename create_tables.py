@@ -18,7 +18,7 @@ def create_tables(conn, cursor):
     for query in create_table_queries:
       cursor.execute(query)
       conn.commit()
-      print('Tables created successfully!')
+    print('Tables created successfully!')
   except Exception as e:
     print(e)
 
